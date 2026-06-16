@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Malicious Web Address Detector</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🛡 Malicious Web Address Detector</h1>
+
+      <div class="card">
+        <h2>🔍 URL Scanner</h2>
+
+        <form action="/scan" method="POST">
+          <div class="input-group">
+            <input
+              type="text"
+              id="urlInput"
+              name="url"
+              placeholder="Enter URL"
+              required
+            />
+
+            <button type="button" onclick="startVoice()" class="voice-btn">
+              🎤
+            </button>
+          </div>
+
+          <br />
+
+          <button type="submit">Scan URL</button>
+        </form>
+      </div>
+
+      {% if result %}
+
+      <div class="result">
+        <h2>Scan Result</h2>
+
+        <h3>Status: {{ result }}</h3>
+
+        <h3>Risk Score: {{ risk_score }}%</h3>
+
+        <p><strong>URL:</strong> {{ scanned_url }}</p>
+
+        <p><strong>Reason:</strong> {{ reason }}</p>
+      </div>
+
+      {% endif %}
+
+      <br />
+
+      <a class="history-btn" href="/history"> 📜 View Scan History </a>
+    </div>
+
+    <script>
+      function startVoice() {
+        if (!("webkitSpeechRecognition" in window)) {
+          alert("Voice recognition not supported in this browser.");
+          return;
+        }
+
+        const recognition = new webkitSpeechRecognition();
+
+        recognition.lang = "en-US";
+
+        recognition.start();
+
+        recognition.onresult = function (event) {
+          document.getElementById("urlInput").value =
+            event.results[0][0].transcript;
+        };
+      }
+    </script>
+  </body>
+</html>

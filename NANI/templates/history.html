@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scan History</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>📜 Scan History</h1>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>URL</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for scan in scans %}
+
+          <tr>
+            <td>{{ scan.id }}</td>
+
+            <td>{{ scan.url }}</td>
+
+            <td>
+              {% if scan.result == "Safe" %}
+              <span class="safe">✅ Safe</span>
+
+              {% elif scan.result == "Suspicious" %}
+              <span class="suspicious">⚠️ Suspicious</span>
+
+              {% else %}
+              <span class="malicious">❌ Malicious</span>
+
+              {% endif %}
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <br /><br />
+
+      <a class="back-btn" href="/"> ← Back Home </a>
+    </div>
+  </body>
+</html>
